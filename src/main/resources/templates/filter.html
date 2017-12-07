@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Bootstrap 101 Template</title>
+
+        <th:block th:replace="base :: head"></th:block>
+    </head>
+    <body>
+        <th:block th:replace="base :: nav"></th:block>
+
+        <div class="container">
+           <div class="row">
+	            <br /><br />
+	            <div class="col-md-12">
+					  <br /><br />
+					    <br /><br />
+		            <div th:if="${imageurl} != null">
+			            <form action="/filter" >
+			            	<img th:src="${imageurl}" />
+			            	<input type="hidden" name ="imagename" th:value="${imagename}" />
+			            	<p>Filter your picture</p>
+			            	Width:<input type="text" name="width" value="250" /><br/>
+			            	Height:<input type="text" name="height" value="250" /><br/>
+			            	crop:<input type="radio" name="action" value="crop"/><br/>
+			            	<select name="filter">
+			            		<option value="">No effect</option>
+							    <option value="sepia">Sepia</option>
+							    <option value="blur">Blur</option>
+							    <option value="grayscale" >Grayscale</option>
+							    <option value="cartoonify" >Cartoonify</option>
+							 </select>
+							  <br/>
+							  <div class="form-group"> 
+			            			<button type="submit" class="btn btn-primary " >Filter</button>
+			            		</div>
+			            </form>
+		        	</div>
+       		 </div>
+        <div class="col-md-12">
+	         <div th:if="${sizedimageurl} != null">
+	                <ul>
+	               		 <div th:utext="${sizedimageurl}"></div>
+	                </ul>
+		                <form action="/save"  method="post">
+		                	<input type="hidden" name="imagename" th:value="${imagename}"/>
+		                	<input type="hidden" name="sizedimageurl" th:value="${sizedimageurl}"/>
+		                	<div class="form-group"> 
+								<button type="submit" class="btn btn-primary " >Save</button>
+							</div>
+						</form>
+						
+						<form action="/upload" >
+							<input type="submit" value="Cancel" />
+						</form>
+	                
+	            </div> 
+		</div>
+		</div>
+		</div>
+        <th:block th:replace="base :: footlinks"></th:block>
+    </body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org " xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Twitter</title>
+
+    <th:block th:replace="base :: head"></th:block>
+</head>
+	<body>
+		<th:block th:replace="base :: nav"></th:block>
+		
+		<div class="container">
+			<div class="row">
+			
+			
+			<div class=" col-md-3">
+				<br/><br/>
+				
+				<div th:if="${message!=null}" >
+					<h3 th:text="${message}"></h3>
+				</div>
+				
+				<br/><br/>
+		       <form th:action="@{/savepost}"  method="post">
+					
+					<div class="form-group">
+						<textarea class="form-control" rows="3" placeholder= "new post" name="content"></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary btn-sm">Tweet</button>
+					
+					<div class="btn-group" role="group">
+				 	 	<a th:href="@{/upload}" class="btn btn-primary btn-sm">Upload Picture</button>
+				  	</div>
+				</form>
+				<br/>
+				
+		    </div>
+		    <br/><br /><br /><br />
+		    
+		    
+		    <div class =" col-md-7">
+				<ul>
+					<div th:if="${allPosts!=null}">
+						<th:block th:each="post : ${allPosts}">
+							
+							<div class="panel panel-default">
+						 		 <div class="panel-body">
+								
+								<strong><a th:href="@{/post/{id}(id = ${post.postedBy.id})}" th:text="${post.postedBy.firstName + ' ' + post.postedBy.lastName}"></a></strong>
+								
+								<p th:text="${post.content}"/>
+								<small><p th:text="${post.postedDate}"></p></small>
+								
+								<a th:href="@{/likedby/post/{postId}(postId=${post.postId})}" th:utext="${#lists.size(post.likes)} + ' likes'"></a> 
+								<br/>
+								<div class= "col-md-0.5">
+									<div th:if="${postdetail!=null}">
+										<ul th:each="like : ${postdetail.likes}">
+											<p>
+												<span th:text="${like.user.firstName + ' ' + like.user.lastName}"></span>,
+											</p>
+										</ul>
+									</div>
+								</div>
+								<div class= "col-md-1">
+									<form th:action="@{/like/post/{postId}(postId=${post.postId})}" method= "post">
+										<button type="submit" class="btn btn-primary btn-xs">Like</button>
+									</form>
+								</div>
+							</div>
+						</div>
+							
+						</th:block>
+					</div>
+					
+				
+					<div th:if="${photos!=null}">
+						<th:block th:each="photo : ${photos}">
+						
+						<div class="panel panel-default">
+							 	<div class="panel-body">
+							 		 
+									<strong><a th:href="@{/photo/{id}(id = ${photo.user.id})}" th:text="${photo.user.firstName + ' ' + photo.user.lastName}"></a></strong>
+									<br/>
+									<div th:utext="${photo.image}"></div>
+									<div><small><span th:text ="${photo.createdAt}"></span></small></div>
+									<br/>
+									<a th:href="@{/likedby/photo/{photoId}(photoId=${photo.photoId})}" th:text="${#lists.size(photo.likes) + ' likes'}"></a>
+									
+									<div class= "col-md-0.5">
+										<div th:if="${photodetail!=null}">
+												<ul th:each="like : ${photodetail.likes}">
+													<p>
+														<span th:text="${like.user.firstName + ' ' + like.user.lastName}"></span>,
+													</p>
+												</ul>
+										</div>
+									</div>
+									<div class= "col-md-1">
+									<form th:action="@{/like/photo/{photoId}(photoId=${photo.photoId})}" method= "post">
+										 <button type="submit" class="btn btn-primary btn-xs">Like</button>
+									</form>
+									</div>
+									
+									<div class= "col-md-2">
+									<form th:action="@{/delete/{photoId}(photoId=${photo.photoId})}" method= "post">
+										<button type="submit" class="btn btn-primary btn-xs">Delete</button>
+									</form>
+									</div>
+								</div>
+							</div>
+						</th:block>
+					</div>
+				</ul>
+				
+				</div>
+			</div>
+		</div>
+		
+		<th:block th:replace="base :: footlinks"></th:block>
+	</body>
+</html>
